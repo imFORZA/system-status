@@ -1,2 +1,3 @@
-# template-plugin
-Template code to create wordpress plugin
+# System Status
+
+A WordPress plugin to manage tracking of System Incidents & Maintenance Periods.

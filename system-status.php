@@ -1,19 +1,19 @@
 <?php
 /**
- * Template code for a WordPress plugin.
+ * System Status by imFORZA
  *
- * @package template-plugin
+ * @package system-status
  */
 
 /*
 -------------------------------------------------------------------------------
-	Plugin Name: Your Plugin Name
+	Plugin Name: System Status
 	Plugin URI: https://www.imforza.com
-	Description: Describe the plugin.
+	Description: A WordPress plugin to manage tracking of System Incidents & Maintenance Periods.
 	Version: 1.0.0
 	Author: imFORZA
 	Contributors: bhubbard, sfgarza
-	Text Domain: template-plugin
+	Text Domain: system-status
 	Author URI: https://www.imforza.com
 	License: GPLv3 or later
 	License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -23,15 +23,15 @@
 /* Exit if accessed directly. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-/** Instantiate the plugin. */
-new TemplatePlugin();
 
+
+if ( ! class_exists( 'SystemStatus' ) ) {
 /**
  * TemplatePlugin class.
  *
- * @package IDX-Exporter
+ * @package system-status
  **/
-class TemplatePlugin {
+class SystemStatus {
 
 	/**
 	 * Plugin Constructor.
@@ -40,7 +40,7 @@ class TemplatePlugin {
 		/* Define Constants */
 		define( 'TEMPLATE_BASE_NAME', plugin_basename( __FILE__ ) );
 		define( 'TEMPLATE_BASE_DIR', plugin_dir_path( __FILE__ ) );
-		define( 'TEMPLATE_PLUGIN_FILE', TEMPLATE_BASE_DIR . 'template-plugin.php' );
+		define( 'TEMPLATE_PLUGIN_FILE', TEMPLATE_BASE_DIR . 'system-status.php' );
 
 		/* Include dependencies */
 		include_once( 'includes.php' );
@@ -49,11 +49,11 @@ class TemplatePlugin {
 	}
 
 	/**
-	 * Initialize idx-exporter.
+	 * Initialize system-status.
 	 */
 	private function init() {
 		/* Language Support */
-		load_plugin_textdomain( 'idx-exporter', false, dirname( TEMPLATE_BASE_NAME ) . '/languages' );
+		load_plugin_textdomain( 'system-status', false, dirname( TEMPLATE_BASE_NAME ) . '/languages' );
 
 		/* IDX Broker Plugin Activation/De-Activation. */
 		register_activation_hook( TEMPLATE_PLUGIN_FILE, array( $this, 'activate' ) );
@@ -79,8 +79,8 @@ class TemplatePlugin {
 	 * Enqueue CSS.
 	 */
 	public function admin_scripts() {
-		wp_register_style( 'template-plugin-css', plugins_url( 'assets/css/template-plugin-min.css', TEMPLATE_PLUGIN_FILE ) );
-		wp_enqueue_style( 'template-plugin-css' );
+		wp_register_style( 'system-status-css', plugins_url( 'assets/css/system-status-min.css', TEMPLATE_PLUGIN_FILE ) );
+		wp_enqueue_style( 'system-status-css' );
 	}
 
 	/**
@@ -109,3 +109,8 @@ class TemplatePlugin {
 		return $links;
 	}
 }
+}
+
+
+/** Instantiate the plugin. */
+new SystemStatus();
