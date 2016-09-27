@@ -67,6 +67,53 @@ add_action( 'init', 'system_status_notices', 0 );
 
 
 
+if ( ! function_exists( 'system_status_notice_type' ) ) {
+
+// Register Custom Taxonomy
+function system_status_notice_type() {
+
+	$labels = array(
+		'name'                       => _x( 'Notice Type', 'Taxonomy General Name', 'system-status' ),
+		'singular_name'              => _x( 'Notice Type', 'Taxonomy Singular Name', 'system-status' ),
+		'menu_name'                  => __( 'Notice Type', 'system-status' ),
+		'all_items'                  => __( 'All Notice Types', 'system-status' ),
+		'parent_item'                => __( 'Parent Notice Type', 'system-status' ),
+		'parent_item_colon'          => __( 'Parent Notice Type:', 'system-status' ),
+		'new_item_name'              => __( 'New Notice Type Name', 'system-status' ),
+		'add_new_item'               => __( 'Add New Notice Type', 'system-status' ),
+		'edit_item'                  => __( 'Edit Notice Type', 'system-status' ),
+		'update_item'                => __( 'Update Notice Type', 'system-status' ),
+		'view_item'                  => __( 'View Notice Type', 'system-status' ),
+		'separate_items_with_commas' => __( 'Separate Notice Types with commas', 'system-status' ),
+		'add_or_remove_items'        => __( 'Add or remove Notice Types', 'system-status' ),
+		'choose_from_most_used'      => __( 'Choose from the most used', 'system-status' ),
+		'popular_items'              => __( 'Popular Notice Types', 'system-status' ),
+		'search_items'               => __( 'Search Notice Types', 'system-status' ),
+		'not_found'                  => __( 'Not Found', 'system-status' ),
+		'no_terms'                   => __( 'No Notice Types', 'system-status' ),
+		'items_list'                 => __( 'Notice Types list', 'system-status' ),
+		'items_list_navigation'      => __( 'Notice Types list navigation', 'system-status' ),
+	);
+	$args = array(
+		'labels'                     => $labels,
+		'hierarchical'               => false,
+		'public'                     => false,
+		'show_ui'                    => true,
+		'show_admin_column'          => true,
+		'show_in_nav_menus'          => false,
+		'show_tagcloud'              => false,
+	);
+	register_taxonomy( 'notice-type', array( 'status-notices' ), $args );
+
+}
+add_action( 'init', 'system_status_notice_type', 0 );
+
+}
+
+
+
+
+
 
 
 class system_status_notice_meta {
@@ -106,8 +153,8 @@ class system_status_notice_meta {
 		wp_nonce_field( 'system_status_nonce_action', 'system_status_nonce' );
 
 		// Retrieve an existing value from the database.
-		$system_status_notice_incident_id = get_post_meta( $post->ID, 'system_status_notice-incident-id', true );
-		$system_status_notice_maintenance_id = get_post_meta( $post->ID, 'system_status_notice-maintenance-id', true );
+		$system_status_notice_incident_id = get_post_meta( $post->ID, 'system_status_notice_incident_id', true );
+		$system_status_notice_maintenance_id = get_post_meta( $post->ID, 'system_status_notice_maintenance_id', true );
 
 		// Set default values.
 		if( empty( $system_status_notice_incident_id ) ) $system_status_notice_incident_id = '';
@@ -119,7 +166,7 @@ class system_status_notice_meta {
 		echo '	<tr>';
 		echo '		<th><label for="system_status_notice-incident-id" class="system_status_notice-incident-id_label">' . __( 'Incident', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		wp_dropdown_pages( array( 'id' => 'system_status_notice_incident_id', 'name' => 'system_status_notice-incident-id', 'class' => 'system_status_notice_incident_id_field', 'selected' => $system_status_notice_incident_id,  'post_type' => 'incidents' ) );
+		wp_dropdown_pages( array( 'id' => 'system_status_notice_incident_id', 'name' => 'system_status_notice_incident_id', 'class' => 'system_status_notice_incident_id_field', 'selected' => $system_status_notice_incident_id,  'post_type' => 'incidents' ) );
 		echo '			<p class="description">' . __( 'The associated Incident.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -127,7 +174,7 @@ class system_status_notice_meta {
 		echo '	<tr>';
 		echo '		<th><label for="system_status_notice-maintenance-id" class="system_status_notice-maintenance-id_label">' . __( 'Maintenance', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		wp_dropdown_pages( array( 'id' => 'system_status_notice_maintenance_id', 'name' => 'system_status_notice-maintenance-id', 'class' => 'system_status_notice_maintenance_id_field', 'selected' => $system_status_notice_maintenance_id, 'post_type' => 'maintenances' ) );
+		wp_dropdown_pages( array( 'id' => 'system_status_notice_maintenance_id', 'name' => 'system_status_notice_maintenance_id', 'class' => 'system_status_notice_maintenance_id_field', 'selected' => $system_status_notice_maintenance_id, 'post_type' => 'maintenances' ) );
 		echo '			<p class="description">' . __( 'The associated Maintenance.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
