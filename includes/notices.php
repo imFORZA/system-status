@@ -156,12 +156,33 @@ class system_status_notice_meta {
 		$system_status_notice_incident_id = get_post_meta( $post->ID, 'system_status_notice_incident_id', true );
 		$system_status_notice_maintenance_id = get_post_meta( $post->ID, 'system_status_notice_maintenance_id', true );
 
+		$notice_types = get_terms( array(
+			'taxonomy' => 'notice-type',
+			'hide_empty' => false,
+		) );
+
 		// Set default values.
 		if( empty( $system_status_notice_incident_id ) ) $system_status_notice_incident_id = '';
 		if( empty( $system_status_notice_maintenance_id ) ) $system_status_notice_maintenance_id = '';
 
 		// Form fields.
 		echo '<table class="form-table">';
+
+		echo '	<tr>';
+		echo '		<th><label for="notice-type" class="notice-type">' . __( 'Notice Type', 'system-status' ) . '</label></th>';
+		echo '		<td>';
+
+		if ( ! empty( $notice_types ) && ! is_wp_error( $notice_types ) ){
+			echo '<select id="notice-type-dropdown" class="">';
+			echo '<option>Choose...</option>';
+		foreach ( $notice_types as $notice_type ) {
+        	echo '<option>' . $notice_type->name . '</option>';
+    	}
+			echo '</select>';
+		}
+
+		echo '		</td>';
+		echo '	</tr>';
 
 		echo '	<tr>';
 		echo '		<th><label for="system_status_notice-incident-id" class="system_status_notice-incident-id_label">' . __( 'Incident', 'system-status' ) . '</label></th>';
