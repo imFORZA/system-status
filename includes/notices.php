@@ -102,6 +102,8 @@ function system_status_notice_type() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => false,
 		'show_tagcloud'              => false,
+		'rest_base'          		 => 'notice-type',
+  		'rest_controller_class' => 'WP_REST_Terms_Controller',
 	);
 	register_taxonomy( 'notice-type', array( 'status-notices' ), $args );
 
