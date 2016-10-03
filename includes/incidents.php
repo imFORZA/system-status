@@ -122,7 +122,7 @@ class system_status_incident_meta {
 			'show_in_rest' 	=> true,
 		));
 
-		// Ticket Count Meta.
+		// Ticket IDs.
 		register_meta('incidents', 'ticket_ids', array(
 			'type' 			=> 'string',
 			'description' 	=> 'Array of attached ticket IDs.',
