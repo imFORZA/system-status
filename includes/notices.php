@@ -179,7 +179,7 @@ class system_status_notice_meta {
 			echo '<select id="notice-type-dropdown" class="widefat" name="notice_type" required>';
 			echo '<option value="">Choose...</option>';
 		foreach ( $notice_types as $notice_type ) {
-        	echo '<option value="' . $notice_type->id . '" selected="' . $notice_type->id  . '">' . $notice_type->name . '</option>';
+        	echo '<option value="' . $notice_type->name . '" selected="' . $notice_type->name  . '">' . $notice_type->name . '</option>';
     	}
 			echo '</select>';
 		}
