@@ -36,6 +36,7 @@ function system_status_incidents() {
 		'items_list_navigation' => __( 'Incidents list navigation', 'system-status' ),
 		'filter_items_list'     => __( 'Filter Incidents list', 'system-status' ),
 	);
+
 	$args = array(
 		'label'                 => __( 'Incident', 'system-status' ),
 		'description'           => __( 'An un-expected event or occurrence.', 'system-status' ),
@@ -52,6 +53,7 @@ function system_status_incidents() {
 		'show_in_rest' 			=> true,
 		'rest_base' 			=> __( 'incidents', 'system-status' ),
 		'rest_controller_class' => 'WP_REST_Posts_Controller',
+		'rewrite' 				=> array('slug' => 'incidents','with_front' => false),
 		'can_export'            => true,
 		'has_archive'           => true,
 		'exclude_from_search'   => false,
