@@ -155,7 +155,7 @@ class system_status_notice_meta {
 		wp_nonce_field( 'system_status_nonce_action', 'system_status_nonce' );
 
 		// Retrieve an existing value from the database.
-		$system_status_notice_incident_id = get_post_meta( $post->ID, 'system_status_notice_incident_id', true );
+		$notice_incident_id = get_post_meta( $post->ID, 'notice_incident_id', true );
 		$system_status_notice_maintenance_id = get_post_meta( $post->ID, 'system_status_notice_maintenance_id', true );
 
 		$notice_types = get_terms( array(
@@ -163,8 +163,9 @@ class system_status_notice_meta {
 			'hide_empty' => false,
 		) );
 
+
 		// Set default values.
-		if( empty( $system_status_notice_incident_id ) ) $system_status_notice_incident_id = '';
+		if( empty( $notice_incident_id ) ) $notice_incident_id = '';
 		if( empty( $system_status_notice_maintenance_id ) ) $system_status_notice_maintenance_id = '';
 
 		// Form fields.
@@ -175,29 +176,74 @@ class system_status_notice_meta {
 		echo '		<td>';
 
 		if ( ! empty( $notice_types ) && ! is_wp_error( $notice_types ) ){
-			echo '<select id="notice-type-dropdown" class="">';
-			echo '<option>Choose...</option>';
+			echo '<select id="notice-type-dropdown" class="widefat" name="notice_type" required>';
+			echo '<option value="">Choose...</option>';
 		foreach ( $notice_types as $notice_type ) {
-        	echo '<option value="' . $notice_type->id . '" >' . $notice_type->name . '</option>';
+        	echo '<option value="' . $notice_type->id . '" selected="' . $notice_type->id  . '">' . $notice_type->name . '</option>';
     	}
 			echo '</select>';
 		}
 
+		echo '	 <p class="description">' . __( 'Is this notice related to an incident or maintenance?', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
 
 		echo '	<tr>';
-		echo '		<th><label for="system_status_notice-incident-id" class="system_status_notice-incident-id_label">' . __( 'Incident', 'system-status' ) . '</label></th>';
-		echo '		<td>';
-		wp_dropdown_pages( array( 'id' => 'system_status_notice_incident_id', 'name' => 'system_status_notice_incident_id', 'class' => 'system_status_notice_incident_id_field', 'selected' => $system_status_notice_incident_id,  'post_type' => 'incidents' ) );
-		echo '			<p class="description">' . __( 'The associated Incident.', 'system-status' ) . '</p>';
+		echo '	<th><label for="notice_incident_id" class="notice_incident_id_label">' . __( 'Incident', 'system-status' ) . '</label></th>';
+		echo '	<td>';
+
+
+
+		wp_reset_postdata();
+
+		$incidents = new WP_Query( array (
+			'post_type'      => 'incidents',
+			'post_status'    => 'publish',
+			'posts_per_page' => - 1,
+		) );
+
+
+		if ( !empty( $incidents ) && ! is_wp_error( $incidents ) ){
+			echo '<select id="notice-type-dropdown" class="widefat" name="notice_incident_id" >';
+			echo '<option value="">Choose...</option>';
+		foreach ( $incidents as $incident ) {
+			if ( ! empty( $incident->ID ) ) {
+        	echo '<option value="' . $incident->ID . '" selected="' . $notice_incident_id  . '">' . $incident->post_title . '</option>';
+        	}
+    	}
+			echo '</select>';
+		}
+
+		echo '	 <p class="description">' . __( 'The associated Incident.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
 
 		echo '	<tr>';
-		echo '		<th><label for="system_status_notice-maintenance-id" class="system_status_notice-maintenance-id_label">' . __( 'Maintenance', 'system-status' ) . '</label></th>';
+		echo '		<th><label for="notice_maintenance_id" class="notice_maintenance_id_label">' . __( 'Maintenance', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		wp_dropdown_pages( array( 'id' => 'system_status_notice_maintenance_id', 'name' => 'system_status_notice_maintenance_id', 'class' => 'system_status_notice_maintenance_id_field', 'selected' => $system_status_notice_maintenance_id, 'post_type' => 'maintenances' ) );
+
+
+		wp_reset_postdata();
+
+		$maintenances =  new WP_Query( array (
+			'post_type'      => 'maintenances',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+		) );
+
+		if ( ! empty( $maintenances ) && ! is_wp_error( $maintenances ) ){
+			echo '<select id="notice-type-dropdown" class="widefat"  name="notice_maintenance_id" >';
+			echo '<option value="">Choose...</option>';
+		foreach ( $maintenances as $maintenance ) {
+			if ( ! empty( $maintenance->ID ) ) {
+        		echo '<option value="' . $maintenance->ID . '" selected="' . $notice_maintenance_id . '" >' . $maintenance->post_title . '</option>';
+        	}
+    	}
+			echo '</select>';
+		}
+
+
+
 		echo '			<p class="description">' . __( 'The associated Maintenance.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -233,12 +279,13 @@ class system_status_notice_meta {
 			return;
 
 		// Sanitize user input.
-		$system_status_new_notice_incident_id = isset( $_POST[ 'system_status_notice-incident-id' ] ) ? sanitize_text_field( $_POST[ 'system_status_notice-incident-id' ] ) : '';
-		$system_status_new_notice_maintenance_id = isset( $_POST[ 'system_status_notice-maintenance-id' ] ) ? sanitize_text_field( $_POST[ 'system_status_notice-maintenance-id' ] ) : '';
+		$new_notice_incident_id = isset( $_POST[ 'notice_incident_id' ] ) ? sanitize_text_field( $_POST[ 'notice_incident_id' ] ) : '';
+		$new_notice_maintenance_id = isset( $_POST[ 'notice_maintenance_id' ] ) ? sanitize_text_field( $_POST[ 'notice_maintenance_id' ] ) : '';
 
 		// Update the meta field in the database.
-		update_post_meta( $post_id, 'system_status_notice-incident-id', $system_status_new_notice_incident_id );
-		update_post_meta( $post_id, 'system_status_notice-maintenance-id', $system_status_new_notice_maintenance_id );
+		wp_set_post_terms( $post_id, 'notice_type', 'status-notices', false );
+		update_post_meta( $post_id, 'notice_incident_id', $new_notice_incident_id );
+		update_post_meta( $post_id, 'notice_maintenance_id', $new_notice_maintenance_id );
 
 	}
 
