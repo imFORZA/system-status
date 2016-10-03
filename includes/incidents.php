@@ -78,7 +78,68 @@ class system_status_incident_meta {
 			add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
 		}
 
+
+		add_action( 'init', array($this, 'register_incident_metafields' ));
+
+
 	}
+
+
+
+
+	public function register_incident_metafields() {
+
+
+		// Start Date Meta.
+		register_meta('incidents', 'incident_startdate', array(
+			'type' 			=> 'string',
+			'description' 	=> 'Incident Start Date.',
+			'single' 		=> true,
+			'show_in_rest' 	=> true,
+		));
+
+		// Start Time Meta.
+		register_meta('incidents', 'incident_starttime', array(
+			'type' 			=> 'string',
+			'description' 	=> 'Incident Start Time.',
+			'single' 		=> true,
+			'show_in_rest' 	=> true,
+		));
+
+		// End Date Meta.
+		register_meta('incidents', 'incident_enddate', array(
+			'type' 			=> 'string',
+			'description' 	=> 'Incident End Date.',
+			'single' 		=> true,
+			'show_in_rest' 	=> true,
+		));
+
+		// End Time Meta.
+		register_meta('incidents', 'incident_endtime', array(
+			'type' 			=> 'string',
+			'description' 	=> 'Incident End Time.',
+			'single' 		=> true,
+			'show_in_rest' 	=> true,
+		));
+
+		// Ticket Count Meta.
+		register_meta('incidents', 'ticket_ids', array(
+			'type' 			=> 'string',
+			'description' 	=> 'Array of attached ticket IDs.',
+			'single' 		=> false,
+			'show_in_rest' 	=> true,
+		));
+
+		// Ticket Count Meta.
+		register_meta('incidents', 'ticket_count', array(
+			'type' 			=> 'integer',
+			'description' 	=> 'Incident Ticket Count.',
+			'single' 		=> true,
+			'show_in_rest' 	=> true,
+		));
+
+	}
+
 
 	public function init_metabox() {
 

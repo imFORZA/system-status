@@ -17,3 +17,6 @@ include_once('includes/maintenances.php');
 // Notices.
 include_once('includes/notices.php');
 
+
+include_once('includes/restapi.php');
+
