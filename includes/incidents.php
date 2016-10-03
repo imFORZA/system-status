@@ -4,6 +4,17 @@
 /* Exit if accessed directly. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+
+function system_status_allow_post_type_wpcom( $allowed_post_types ) {
+    $allowed_post_types[] = 'incidents';
+    $allowed_post_types[] = 'maintenances';
+    $allowed_post_types[] = 'status-notices';
+    return $allowed_post_types;
+}
+add_filter( 'rest_api_allowed_post_types', 'system_status_allow_post_type_wpcom' );
+
+
+
 if ( ! function_exists('system_status_incidents') ) {
 
 // Register Custom Post Type
