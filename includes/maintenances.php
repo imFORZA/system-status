@@ -3,12 +3,12 @@
 /* Exit if accessed directly. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if ( ! function_exists('system_status_maintenance') ) {
+if ( ! function_exists( 'system_status_maintenance' ) ) {
 
-// Register Custom Post Type
-function system_status_maintenance() {
+	// Register Custom Post Type
+	function system_status_maintenance() {
 
-	$labels = array(
+		$labels = array(
 		'name'                  => _x( 'Maintenances', 'Post Type General Name', 'system-status' ),
 		'singular_name'         => _x( 'Maintenance', 'Post Type Singular Name', 'system-status' ),
 		'menu_name'             => __( 'Maintenances', 'system-status' ),
@@ -34,33 +34,33 @@ function system_status_maintenance() {
 		'items_list'            => __( 'Maintenances list', 'system-status' ),
 		'items_list_navigation' => __( 'Maintenances list navigation', 'system-status' ),
 		'filter_items_list'     => __( 'Filter Maintenances list', 'system-status' ),
-	);
-	$args = array(
-		'label'                 => __( 'Maintenance', 'system-status' ),
-		'description'           => __( 'An scheduled event or occurrence.', 'system-status' ),
-		'labels'                => $labels,
-		'supports'              => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', ),
-		'hierarchical'          => false,
-		'public'                => true,
-		'show_ui'               => true,
-		'show_in_menu'          => true,
-		'menu_position'         => 5,
-		'menu_icon'             => 'dashicons-admin-tools',
-		'show_in_admin_bar'     => true,
-		'show_in_nav_menus'     => true,
-		'show_in_rest' 			=> true,
-		'rest_base' 			=> __( 'maintenances', 'system-status' ),
-		'rest_controller_class' => 'WP_REST_Posts_Controller',
-		'can_export'            => true,
-		'has_archive'           => true,
-		'exclude_from_search'   => false,
-		'publicly_queryable'    => true,
-		'capability_type'       => 'post',
-	);
-	register_post_type( 'maintenances', $args );
+			);
+			$args = array(
+			'label'                 => __( 'Maintenance', 'system-status' ),
+			'description'           => __( 'An scheduled event or occurrence.', 'system-status' ),
+			'labels'                => $labels,
+			'supports'              => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions' ),
+			'hierarchical'          => false,
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_menu'          => true,
+			'menu_position'         => 5,
+			'menu_icon'             => 'dashicons-admin-tools',
+			'show_in_admin_bar'     => true,
+			'show_in_nav_menus'     => true,
+			'show_in_rest' 			=> true,
+			'rest_base' 			=> __( 'maintenances', 'system-status' ),
+			'rest_controller_class' => 'WP_REST_Posts_Controller',
+			'can_export'            => true,
+			'has_archive'           => true,
+			'exclude_from_search'   => false,
+			'publicly_queryable'    => true,
+			'capability_type'       => 'post',
+			);
+			register_post_type( 'maintenances', $args );
 
-}
-add_action( 'init', 'system_status_maintenance', 0 );
+	}
+	add_action( 'init', 'system_status_maintenance', 0 );
 
 }
 
@@ -83,7 +83,7 @@ class system_status_maint_meta {
 
 	public function init_metabox() {
 
-		add_action( 'add_meta_boxes',        array( $this, 'add_metabox' )         );
+		add_action( 'add_meta_boxes',        array( $this, 'add_metabox' ) );
 		add_action( 'save_post',             array( $this, 'save_metabox' ), 10, 2 );
 
 	}
@@ -114,11 +114,16 @@ class system_status_maint_meta {
 		$system_status_maint_actual_start_time = get_post_meta( $post->ID, 'system_status_maint-actual-start-time', true );
 
 		// Set default values.
-		if( empty( $system_status_maint_scheduled_start_date ) ) $system_status_maint_scheduled_start_date = '';
-		if( empty( $system_status_maint_scheduled_start_time ) ) $system_status_maint_scheduled_start_time = '';
-		if( empty( $system_status_maint_scheduled_end_date ) ) $system_status_maint_scheduled_end_date = '';
-		if( empty( $system_status_maint_actual_start_date ) ) $system_status_maint_actual_start_date = '';
-		if( empty( $system_status_maint_actual_start_time ) ) $system_status_maint_actual_start_time = '';
+		if ( empty( $system_status_maint_scheduled_start_date ) ) { $system_status_maint_scheduled_start_date = '';
+		}
+		if ( empty( $system_status_maint_scheduled_start_time ) ) { $system_status_maint_scheduled_start_time = '';
+		}
+		if ( empty( $system_status_maint_scheduled_end_date ) ) { $system_status_maint_scheduled_end_date = '';
+		}
+		if ( empty( $system_status_maint_actual_start_date ) ) { $system_status_maint_actual_start_date = '';
+		}
+		if ( empty( $system_status_maint_actual_start_time ) ) { $system_status_maint_actual_start_time = '';
+		}
 
 		// Form fields.
 		echo '<table class="form-table">';
@@ -180,31 +185,36 @@ class system_status_maint_meta {
 		$nonce_action = 'system_status_nonce_action';
 
 		// Check if a nonce is set.
-		if ( ! isset( $nonce_name ) )
+		if ( ! isset( $nonce_name ) ) {
 			return;
+		}
 
 		// Check if a nonce is valid.
-		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) )
+		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
 			return;
+		}
 
 		// Check if the user has permissions to save data.
-		if ( ! current_user_can( 'edit_post', $post_id ) )
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
+		}
 
 		// Check if it's not an autosave.
-		if ( wp_is_post_autosave( $post_id ) )
+		if ( wp_is_post_autosave( $post_id ) ) {
 			return;
+		}
 
 		// Check if it's not a revision.
-		if ( wp_is_post_revision( $post_id ) )
+		if ( wp_is_post_revision( $post_id ) ) {
 			return;
+		}
 
 		// Sanitize user input.
-		$system_status_new_maint_scheduled_start_date = isset( $_POST[ 'system_status_maint-scheduled-start-date' ] ) ? sanitize_text_field( $_POST[ 'system_status_maint-scheduled-start-date' ] ) : '';
-		$system_status_new_maint_scheduled_start_time = isset( $_POST[ 'system_status_maint-scheduled-start-time' ] ) ? sanitize_text_field( $_POST[ 'system_status_maint-scheduled-start-time' ] ) : '';
-		$system_status_new_maint_scheduled_end_date = isset( $_POST[ 'system_status_maint-scheduled-end-date' ] ) ? sanitize_text_field( $_POST[ 'system_status_maint-scheduled-end-date' ] ) : '';
-		$system_status_new_maint_actual_start_date = isset( $_POST[ 'system_status_maint-actual-start-date' ] ) ? sanitize_text_field( $_POST[ 'system_status_maint-actual-start-date' ] ) : '';
-		$system_status_new_maint_actual_start_time = isset( $_POST[ 'system_status_maint-actual-start-time' ] ) ? sanitize_text_field( $_POST[ 'system_status_maint-actual-start-time' ] ) : '';
+		$system_status_new_maint_scheduled_start_date = isset( $_POST['system_status_maint-scheduled-start-date'] ) ? sanitize_text_field( $_POST['system_status_maint-scheduled-start-date'] ) : '';
+		$system_status_new_maint_scheduled_start_time = isset( $_POST['system_status_maint-scheduled-start-time'] ) ? sanitize_text_field( $_POST['system_status_maint-scheduled-start-time'] ) : '';
+		$system_status_new_maint_scheduled_end_date = isset( $_POST['system_status_maint-scheduled-end-date'] ) ? sanitize_text_field( $_POST['system_status_maint-scheduled-end-date'] ) : '';
+		$system_status_new_maint_actual_start_date = isset( $_POST['system_status_maint-actual-start-date'] ) ? sanitize_text_field( $_POST['system_status_maint-actual-start-date'] ) : '';
+		$system_status_new_maint_actual_start_time = isset( $_POST['system_status_maint-actual-start-time'] ) ? sanitize_text_field( $_POST['system_status_maint-actual-start-time'] ) : '';
 
 		// Update the meta field in the database.
 		update_post_meta( $post_id, 'system_status_maint-scheduled-start-date', $system_status_new_maint_scheduled_start_date );
@@ -214,7 +224,6 @@ class system_status_maint_meta {
 		update_post_meta( $post_id, 'system_status_maint-actual-start-time', $system_status_new_maint_actual_start_time );
 
 	}
-
 }
 
 new system_status_maint_meta;

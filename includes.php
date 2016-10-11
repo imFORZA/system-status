@@ -9,14 +9,14 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 // Incidents.
-include_once('includes/incidents.php');
+include_once( 'includes/incidents.php' );
 
 // Maintenances.
-include_once('includes/maintenances.php');
+include_once( 'includes/maintenances.php' );
 
 // Notices.
-include_once('includes/notices.php');
+include_once( 'includes/notices.php' );
 
 
-include_once('includes/restapi.php');
+include_once( 'includes/restapi.php' );
 

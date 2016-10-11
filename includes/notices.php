@@ -3,12 +3,12 @@
 /* Exit if accessed directly. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if ( ! function_exists('system_status_notices') ) {
+if ( ! function_exists( 'system_status_notices' ) ) {
 
-// Register Custom Post Type
-function system_status_notices() {
+	// Register Custom Post Type
+	function system_status_notices() {
 
-	$labels = array(
+		$labels = array(
 		'name'                  => _x( 'Notices', 'Post Type General Name', 'system-status' ),
 		'singular_name'         => _x( 'Notice', 'Post Type Singular Name', 'system-status' ),
 		'menu_name'             => __( 'Notices', 'system-status' ),
@@ -34,34 +34,34 @@ function system_status_notices() {
 		'items_list'            => __( 'Notices list', 'system-status' ),
 		'items_list_navigation' => __( 'Notices list navigation', 'system-status' ),
 		'filter_items_list'     => __( 'Filter Notices list', 'system-status' ),
-	);
-	$args = array(
-		'label'                 => __( 'Status Notice', 'system-status' ),
-		'description'           => __( 'Notices for Incidents or Maintenances.', 'system-status' ),
-		'labels'                => $labels,
-		'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', ),
-		'taxonomies'            => array( 'incidents', ' maintenances' ),
-		'hierarchical'          => false,
-		'public'                => true,
-		'show_ui'               => true,
-		'show_in_menu'          => true,
-		'menu_position'         => 5,
-		'menu_icon'             => 'dashicons-megaphone',
-		'show_in_admin_bar'     => true,
-		'show_in_nav_menus'     => true,
-		'show_in_rest' 			=> true,
-		'rest_base' 			=> __( 'notices', 'system-status' ),
-		'rest_controller_class' => 'WP_REST_Posts_Controller',
-		'can_export'            => true,
-		'has_archive'           => true,
-		'exclude_from_search'   => false,
-		'publicly_queryable'    => true,
-		'capability_type'       => 'post',
-	);
-	register_post_type( 'status-notices', $args );
+			);
+			$args = array(
+			'label'                 => __( 'Status Notice', 'system-status' ),
+			'description'           => __( 'Notices for Incidents or Maintenances.', 'system-status' ),
+			'labels'                => $labels,
+			'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions' ),
+			'taxonomies'            => array( 'incidents', ' maintenances' ),
+			'hierarchical'          => false,
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_menu'          => true,
+			'menu_position'         => 5,
+			'menu_icon'             => 'dashicons-megaphone',
+			'show_in_admin_bar'     => true,
+			'show_in_nav_menus'     => true,
+			'show_in_rest' 			=> true,
+			'rest_base' 			=> __( 'notices', 'system-status' ),
+			'rest_controller_class' => 'WP_REST_Posts_Controller',
+			'can_export'            => true,
+			'has_archive'           => true,
+			'exclude_from_search'   => false,
+			'publicly_queryable'    => true,
+			'capability_type'       => 'post',
+			);
+			register_post_type( 'status-notices', $args );
 
-}
-add_action( 'init', 'system_status_notices', 0 );
+	}
+	add_action( 'init', 'system_status_notices', 0 );
 
 }
 
@@ -69,10 +69,10 @@ add_action( 'init', 'system_status_notices', 0 );
 
 if ( ! function_exists( 'system_status_notice_type' ) ) {
 
-// Register Custom Taxonomy
-function system_status_notice_type() {
+	// Register Custom Taxonomy
+	function system_status_notice_type() {
 
-	$labels = array(
+		$labels = array(
 		'name'                       => _x( 'Notice Type', 'Taxonomy General Name', 'system-status' ),
 		'singular_name'              => _x( 'Notice Type', 'Taxonomy Singular Name', 'system-status' ),
 		'menu_name'                  => __( 'Notice Type', 'system-status' ),
@@ -93,22 +93,22 @@ function system_status_notice_type() {
 		'no_terms'                   => __( 'No Notice Types', 'system-status' ),
 		'items_list'                 => __( 'Notice Types list', 'system-status' ),
 		'items_list_navigation'      => __( 'Notice Types list navigation', 'system-status' ),
-	);
-	$args = array(
-		'labels'                     => $labels,
-		'hierarchical'               => false,
-		'public'                     => false,
-		'show_ui'                    => true,
-		'show_admin_column'          => true,
-		'show_in_nav_menus'          => false,
-		'show_tagcloud'              => false,
-		'rest_base'          		 => 'notice-type',
-  		'rest_controller_class' => 'WP_REST_Terms_Controller',
-	);
-	register_taxonomy( 'notice-type', array( 'status-notices' ), $args );
+			);
+			$args = array(
+			'labels'                     => $labels,
+			'hierarchical'               => false,
+			'public'                     => false,
+			'show_ui'                    => true,
+			'show_admin_column'          => true,
+			'show_in_nav_menus'          => false,
+			'show_tagcloud'              => false,
+			'rest_base'          		 => 'notice-type',
+			'rest_controller_class' => 'WP_REST_Terms_Controller',
+			);
+			register_taxonomy( 'notice-type', array( 'status-notices' ), $args );
 
-}
-add_action( 'init', 'system_status_notice_type', 0 );
+	}
+	add_action( 'init', 'system_status_notice_type', 0 );
 
 }
 
@@ -131,7 +131,7 @@ class system_status_notice_meta {
 
 	public function init_metabox() {
 
-		add_action( 'add_meta_boxes',        array( $this, 'add_metabox' )         );
+		add_action( 'add_meta_boxes',        array( $this, 'add_metabox' ) );
 		add_action( 'save_post',             array( $this, 'save_metabox' ), 10, 2 );
 
 	}
@@ -163,10 +163,11 @@ class system_status_notice_meta {
 			'hide_empty' => false,
 		) );
 
-
 		// Set default values.
-		if( empty( $notice_incident_id ) ) $notice_incident_id = '';
-		if( empty( $system_status_notice_maintenance_id ) ) $system_status_notice_maintenance_id = '';
+		if ( empty( $notice_incident_id ) ) { $notice_incident_id = '';
+		}
+		if ( empty( $system_status_notice_maintenance_id ) ) { $system_status_notice_maintenance_id = '';
+		}
 
 		// Form fields.
 		echo '<table class="form-table">';
@@ -175,12 +176,12 @@ class system_status_notice_meta {
 		echo '		<th><label for="notice-type" class="notice-type">' . __( 'Notice Type', 'system-status' ) . '</label></th>';
 		echo '		<td>';
 
-		if ( ! empty( $notice_types ) && ! is_wp_error( $notice_types ) ){
+		if ( ! empty( $notice_types ) && ! is_wp_error( $notice_types ) ) {
 			echo '<select id="notice-type-dropdown" class="widefat" name="notice_type" required>';
 			echo '<option value="">Choose...</option>';
-		foreach ( $notice_types as $notice_type ) {
-        	echo '<option value="' . $notice_type->name . '" selected="' . $notice_type->name  . '">' . $notice_type->name . '</option>';
-    	}
+			foreach ( $notice_types as $notice_type ) {
+				echo '<option value="' . $notice_type->name . '" selected="' . $notice_type->name  . '">' . $notice_type->name . '</option>';
+			}
 			echo '</select>';
 		}
 
@@ -192,25 +193,22 @@ class system_status_notice_meta {
 		echo '	<th><label for="notice_incident_id" class="notice_incident_id_label">' . __( 'Incident', 'system-status' ) . '</label></th>';
 		echo '	<td>';
 
-
-
 		wp_reset_postdata();
 
-		$incidents = new WP_Query( array (
+		$incidents = new WP_Query( array(
 			'post_type'      => 'incidents',
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 		) );
 
-
-		if ( !empty( $incidents ) && ! is_wp_error( $incidents ) ){
+		if ( ! empty( $incidents ) && ! is_wp_error( $incidents ) ) {
 			echo '<select id="notice-type-dropdown" class="widefat" name="notice_incident_id" >';
 			echo '<option value="">Choose...</option>';
-		foreach ( $incidents as $incident ) {
-			if ( ! empty( $incident->ID ) ) {
-        	echo '<option value="' . $incident->ID . '" selected="' . $notice_incident_id  . '">' . $incident->post_title . '</option>';
-        	}
-    	}
+			foreach ( $incidents as $incident ) {
+				if ( ! empty( $incident->ID ) ) {
+					echo '<option value="' . $incident->ID . '" selected="' . $notice_incident_id  . '">' . $incident->post_title . '</option>';
+				}
+			}
 			echo '</select>';
 		}
 
@@ -222,27 +220,24 @@ class system_status_notice_meta {
 		echo '		<th><label for="notice_maintenance_id" class="notice_maintenance_id_label">' . __( 'Maintenance', 'system-status' ) . '</label></th>';
 		echo '		<td>';
 
-
 		wp_reset_postdata();
 
-		$maintenances =  new WP_Query( array (
+		$maintenances = new WP_Query( array(
 			'post_type'      => 'maintenances',
 			'post_status'    => 'publish',
 			'posts_per_page' => -1,
 		) );
 
-		if ( ! empty( $maintenances ) && ! is_wp_error( $maintenances ) ){
+		if ( ! empty( $maintenances ) && ! is_wp_error( $maintenances ) ) {
 			echo '<select id="notice-type-dropdown" class="widefat"  name="notice_maintenance_id" >';
 			echo '<option value="">Choose...</option>';
-		foreach ( $maintenances as $maintenance ) {
-			if ( ! empty( $maintenance->ID ) ) {
-        		echo '<option value="' . $maintenance->ID . '" selected="' . $notice_maintenance_id . '" >' . $maintenance->post_title . '</option>';
-        	}
-    	}
+			foreach ( $maintenances as $maintenance ) {
+				if ( ! empty( $maintenance->ID ) ) {
+					echo '<option value="' . $maintenance->ID . '" selected="' . $notice_maintenance_id . '" >' . $maintenance->post_title . '</option>';
+				}
+			}
 			echo '</select>';
 		}
-
-
 
 		echo '			<p class="description">' . __( 'The associated Maintenance.', 'system-status' ) . '</p>';
 		echo '		</td>';
@@ -259,28 +254,33 @@ class system_status_notice_meta {
 		$nonce_action = 'system_status_nonce_action';
 
 		// Check if a nonce is set.
-		if ( ! isset( $nonce_name ) )
+		if ( ! isset( $nonce_name ) ) {
 			return;
+		}
 
 		// Check if a nonce is valid.
-		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) )
+		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
 			return;
+		}
 
 		// Check if the user has permissions to save data.
-		if ( ! current_user_can( 'edit_post', $post_id ) )
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
+		}
 
 		// Check if it's not an autosave.
-		if ( wp_is_post_autosave( $post_id ) )
+		if ( wp_is_post_autosave( $post_id ) ) {
 			return;
+		}
 
 		// Check if it's not a revision.
-		if ( wp_is_post_revision( $post_id ) )
+		if ( wp_is_post_revision( $post_id ) ) {
 			return;
+		}
 
 		// Sanitize user input.
-		$new_notice_incident_id = isset( $_POST[ 'notice_incident_id' ] ) ? sanitize_text_field( $_POST[ 'notice_incident_id' ] ) : '';
-		$new_notice_maintenance_id = isset( $_POST[ 'notice_maintenance_id' ] ) ? sanitize_text_field( $_POST[ 'notice_maintenance_id' ] ) : '';
+		$new_notice_incident_id = isset( $_POST['notice_incident_id'] ) ? sanitize_text_field( $_POST['notice_incident_id'] ) : '';
+		$new_notice_maintenance_id = isset( $_POST['notice_maintenance_id'] ) ? sanitize_text_field( $_POST['notice_maintenance_id'] ) : '';
 
 		// Update the meta field in the database.
 		wp_set_post_terms( $post_id, 'notice_type', 'status-notices', false );
@@ -288,7 +288,6 @@ class system_status_notice_meta {
 		update_post_meta( $post_id, 'notice_maintenance_id', $new_notice_maintenance_id );
 
 	}
-
 }
 
 new system_status_notice_meta;
