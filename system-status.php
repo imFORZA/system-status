@@ -104,7 +104,7 @@ class SystemStatus {
 	 * @return [Array]        : Array of links on plugin page.
 	 */
 	public function plugin_links( $links ) {
-		$tools_link = '<a href="#">Tools</a>';
+		$tools_link = '<a href="#">Settings</a>';
 		array_unshift( $links, $tools_link );
 		return $links;
 	}

@@ -163,6 +163,12 @@ class system_status_maint_meta {
 		echo '		</td>';
 		echo '	</tr>';
 
+		echo '	<tr>';
+		echo '		<td>';
+		echo 'Actual End Date/Time. # of Attached Tickets, Array of Attached Ticket IDs, link to attached notices.';
+		echo '		</td>';
+		echo '	</tr>';
+
 		echo '</table>';
 
 	}

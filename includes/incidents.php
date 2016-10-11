@@ -234,6 +234,12 @@ class system_status_incident_meta {
 		echo '		</td>';
 		echo '	</tr>';
 
+		echo '<tr>';
+		echo '		<td>';
+		echo 'Input for Array of Ticket IDs., Link to attached Notices.';
+		echo '		</td>';
+		echo '</tr>';
+
 		echo '</table>';
 
 	}
