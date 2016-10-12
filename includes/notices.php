@@ -58,7 +58,7 @@ if ( ! function_exists( 'system_status_notices' ) ) {
 			'publicly_queryable'    => true,
 			'capability_type'       => 'post',
 			);
-			register_post_type( 'status-notices', $args );
+			register_post_type( 'ss-notice', $args );
 
 	}
 	add_action( 'init', 'system_status_notices', 0 );
@@ -105,7 +105,7 @@ if ( ! function_exists( 'system_status_notice_type' ) ) {
 			'rest_base'          		 => 'notice-type',
 			'rest_controller_class' => 'WP_REST_Terms_Controller',
 			);
-			register_taxonomy( 'notice-type', array( 'status-notices' ), $args );
+			register_taxonomy( 'notice-type', array( 'ss-notice' ), $args );
 
 	}
 	add_action( 'init', 'system_status_notice_type', 0 );
@@ -118,8 +118,18 @@ if ( ! function_exists( 'system_status_notice_type' ) ) {
 
 
 
+/**
+ * system_status_notice_meta class.
+ */
 class system_status_notice_meta {
 
+
+	/**
+	 * __construct function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function __construct() {
 
 		if ( is_admin() ) {
@@ -129,6 +139,13 @@ class system_status_notice_meta {
 
 	}
 
+
+	/**
+	 * init_metabox function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function init_metabox() {
 
 		add_action( 'add_meta_boxes',        array( $this, 'add_metabox' ) );
@@ -136,19 +153,34 @@ class system_status_notice_meta {
 
 	}
 
+
+	/**
+	 * add_metabox function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function add_metabox() {
 
 		add_meta_box(
 			'notice_details',
 			__( 'Details', 'system-status' ),
 			array( $this, 'render_notice_metabox' ),
-			'status-notices',
+			'ss-notice',
 			'advanced',
 			'default'
 		);
 
 	}
 
+
+	/**
+	 * render_notice_metabox function.
+	 *
+	 * @access public
+	 * @param mixed $post
+	 * @return void
+	 */
 	public function render_notice_metabox( $post ) {
 
 		// Add nonce for security and authentication.
@@ -196,7 +228,7 @@ class system_status_notice_meta {
 		wp_reset_postdata();
 
 		$incidents = new WP_Query( array(
-			'post_type'      => 'incidents',
+			'post_type'      => 'incident',
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 		) );
@@ -247,6 +279,15 @@ class system_status_notice_meta {
 
 	}
 
+
+	/**
+	 * save_metabox function.
+	 *
+	 * @access public
+	 * @param mixed $post_id
+	 * @param mixed $post
+	 * @return void
+	 */
 	public function save_metabox( $post_id, $post ) {
 
 		// Add nonce for security and authentication.
