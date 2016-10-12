@@ -5,20 +5,33 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 
-function system_status_allow_post_type_wpcom( $allowed_post_types ) {
+/**
+ * allow_post_type_wpcom function.
+ *
+ * @access public
+ * @param mixed $allowed_post_types
+ * @return void
+ */
+function allow_post_type_wpcom( $allowed_post_types ) {
 	$allowed_post_types[] = 'incidents';
 	$allowed_post_types[] = 'maintenances';
 	$allowed_post_types[] = 'status-notices';
 	return $allowed_post_types;
 }
-add_filter( 'rest_api_allowed_post_types', 'system_status_allow_post_type_wpcom' );
+add_filter( 'rest_api_allowed_post_types', 'allow_post_type_wpcom' );
 
 
 
-if ( ! function_exists( 'system_status_incidents' ) ) {
+if ( ! function_exists( 'incidents' ) ) {
 
-	// Register Custom Post Type
-	function system_status_incidents() {
+
+	/**
+	 * incidents function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function incidents() {
 
 		$labels = array(
 		'name'                  => _x( 'Incidents', 'Post Type General Name', 'system-status' ),
@@ -71,17 +84,27 @@ if ( ! function_exists( 'system_status_incidents' ) ) {
 			'publicly_queryable'    => true,
 			'capability_type'       => 'post',
 			);
-			register_post_type( 'incidents', $args );
+			register_post_type( 'incident', $args );
 
 	}
-	add_action( 'init', 'system_status_incidents', 0 );
+	add_action( 'init', 'incidents', 0 );
 
 }
 
 
 
-class system_status_incident_meta {
+/**
+ * incident_meta class.
+ */
+class incident_meta {
 
+
+	/**
+	 * __construct function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function __construct() {
 
 		if ( is_admin() ) {
@@ -96,10 +119,16 @@ class system_status_incident_meta {
 
 
 
+	/**
+	 * register_incident_metafields function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function register_incident_metafields() {
 
 		// Start Date Meta.
-		register_meta('incidents', 'incident_startdate', array(
+		register_meta('incident', 'incident_start_date', array(
 			'type' 			=> 'string',
 			'description' 	=> 'Incident Start Date.',
 			'single' 		=> true,
@@ -107,7 +136,7 @@ class system_status_incident_meta {
 		));
 
 		// Start Time Meta.
-		register_meta('incidents', 'incident_starttime', array(
+		register_meta('incident', 'incident_start_time', array(
 			'type' 			=> 'string',
 			'description' 	=> 'Incident Start Time.',
 			'single' 		=> true,
@@ -115,7 +144,7 @@ class system_status_incident_meta {
 		));
 
 		// End Date Meta.
-		register_meta('incidents', 'incident_enddate', array(
+		register_meta('incident', 'incident_end_date', array(
 			'type' 			=> 'string',
 			'description' 	=> 'Incident End Date.',
 			'single' 		=> true,
@@ -123,7 +152,7 @@ class system_status_incident_meta {
 		));
 
 		// End Time Meta.
-		register_meta('incidents', 'incident_endtime', array(
+		register_meta('incident', 'incident_end_time', array(
 			'type' 			=> 'string',
 			'description' 	=> 'Incident End Time.',
 			'single' 		=> true,
@@ -131,21 +160,28 @@ class system_status_incident_meta {
 		));
 
 		// Ticket IDs.
-		register_meta('incidents', 'ticket_ids', array(
+		register_meta('incident', 'incident_ticket_ids', array(
 			'type' 			=> 'string',
 			'description' 	=> 'Array of attached ticket IDs.',
-			'single' 		=> false,
+			'single' 		=> true,
 			'show_in_rest' 	=> true,
 		));
 
 		// Ticket Count Meta.
-		register_meta('incidents', 'ticket_count', array(
+		register_meta('incident', 'incident_ticket_count', array(
 			'type' 			=> 'integer',
 			'description' 	=> 'Incident Ticket Count.',
 			'single' 		=> true,
 			'show_in_rest' 	=> true,
 		));
 
+		// Total Incident Length.
+		register_meta('incident', 'incident_total_length', array(
+			'type' 			=> 'integer',
+			'description' 	=> 'Total Length of the Incident.',
+			'single' 		=> true,
+			'show_in_rest' 	=> true,
+		));
 	}
 
 
@@ -162,7 +198,7 @@ class system_status_incident_meta {
 			'incident_details',
 			__( 'Details', 'system-status' ),
 			array( $this, 'render_metabox' ),
-			'incidents',
+			'incident',
 			'advanced',
 			'default'
 		);
@@ -172,66 +208,69 @@ class system_status_incident_meta {
 	public function render_metabox( $post ) {
 
 		// Add nonce for security and authentication.
-		wp_nonce_field( 'system_status_nonce_action', 'system_status_nonce' );
+		wp_nonce_field( 'nonce_action', 'nonce' );
 
 		// Retrieve an existing value from the database.
-		$system_status_incident_startdate = get_post_meta( $post->ID, 'system_status_incident-startdate', true );
-		$system_status_incident_starttime = get_post_meta( $post->ID, 'system_status_incident-starttime', true );
-		$system_status_incident_enddate = get_post_meta( $post->ID, 'system_status_incident-enddate', true );
-		$system_status_incident_endtime = get_post_meta( $post->ID, 'system_status_incident-endtime', true );
-		$system_status_incident_ticketcount = get_post_meta( $post->ID, 'system_status_incident-ticketcount', true );
+		$incident_start_date = get_post_meta( $post->ID, 'incident_start_date', true );
+		$incident_start_time = get_post_meta( $post->ID, 'incident_start_time', true );
+		$incident_end_date = get_post_meta( $post->ID, 'incident_end_date', true );
+		$incident_end_time = get_post_meta( $post->ID, 'incident_end_time', true );
+		$incident_ticket_count = get_post_meta( $post->ID, 'incident_ticket_count', true );
+		$incident_total_length = get_post_meta( $post->ID, 'incident_total_length', true );
 
 		// Set default values.
-		if ( empty( $system_status_incident_startdate ) ) { $system_status_incident_startdate = '';
+		if ( empty( $incident_start_date ) ) { $incident_start_date = '';
 		}
-		if ( empty( $system_status_incident_starttime ) ) { $system_status_incident_starttime = '';
+		if ( empty( $incident_start_time ) ) { $incident_start_time = '';
 		}
-		if ( empty( $system_status_incident_enddate ) ) { $system_status_incident_enddate = '';
+		if ( empty( $incident_end_date ) ) { $incident_end_date = '';
 		}
-		if ( empty( $system_status_incident_endtime ) ) { $system_status_incident_endtime = '';
+		if ( empty( $incident_end_time ) ) { $incident_end_time = '';
 		}
-		if ( empty( $system_status_incident_ticketcount ) ) { $system_status_incident_ticketcount = '';
+		if ( empty( $incident_ticket_count ) ) { $incident_ticket_count = '';
+		}
+		if ( empty( $incident_total_length ) ) { $incident_total_length = '';
 		}
 
 		// Form fields.
 		echo '<table class="form-table">';
 
 		echo '	<tr>';
-		echo '		<th><label for="system_status_incident-startdate" class="system_status_incident-startdate_label">' . __( 'Start Date', 'system-status' ) . '</label></th>';
+		echo '		<th><label for="incident_start_date" class="incident-startdate_label">' . __( 'Start Date', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="date" id="system_status_incident_startdate" name="system_status_incident-startdate" class="system_status_incident_startdate_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $system_status_incident_startdate ) . '">';
+		echo '			<input type="date" id="incident-start-date" name="incident_start_time" class="incident-field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $incident_start_date ) . '">';
 		echo '			<p class="description">' . __( 'The Date the Incident started to occur.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
 
 		echo '	<tr>';
-		echo '		<th><label for="system_status_incident-starttime" class="system_status_incident-starttime_label">' . __( 'Start Time', 'system-status' ) . '</label></th>';
+		echo '		<th><label for="incident_start_time" class="incident-starttime_label">' . __( 'Start Time', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="time" id="system_status_incident_starttime" name="system_status_incident-starttime" class="system_status_incident_starttime_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $system_status_incident_starttime ) . '">';
+		echo '			<input type="time" id="incident_starttime" name="incident_start_time" class="incident-field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $incident_start_time ) . '">';
 		echo '			<p class="description">' . __( 'The time the incident started.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
 
 		echo '	<tr>';
-		echo '		<th><label for="system_status_incident-enddate" class="system_status_incident-enddate_label">' . __( 'End Date', 'system-status' ) . '</label></th>';
+		echo '		<th><label for="incident_end_date" class="incident-enddate_label">' . __( 'End Date', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="date" id="system_status_incident_enddate" name="system_status_incident-enddate" class="system_status_incident_enddate_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $system_status_incident_enddate ) . '">';
+		echo '			<input type="date" id="incident-end-date" name="incident_end_date" class="incident-field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $incident_end_date ) . '">';
 		echo '			<p class="description">' . __( 'The date the incident ended.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
 
 		echo '	<tr>';
-		echo '		<th><label for="system_status_incident-endtime" class="system_status_incident-endtime_label">' . __( 'End Time', 'system-status' ) . '</label></th>';
+		echo '		<th><label for="incident_end_time" class="incident-endtime_label">' . __( 'End Time', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="time" id="system_status_incident_endtime" name="system_status_incident-endtime" class="system_status_incident_endtime_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $system_status_incident_endtime ) . '">';
+		echo '			<input type="time" id="incident-end-time" name="incident_end_time" class="incident-field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $incident_end_time ) . '">';
 		echo '			<p class="description">' . __( 'The time the incident ended.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
 
 		echo '	<tr>';
-		echo '		<th><label for="system_status_incident-ticketcount" class="system_status_incident-ticketcount_label">' . __( '# of Tickets Reporting', 'system-status' ) . '</label></th>';
+		echo '		<th><label for="incident-ticketcount" class="incident-ticketcount_label">' . __( '# of Tickets Reporting', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="number" id="system_status_incident_ticketcount" name="system_status_incident-ticketcount" class="system_status_incident_ticketcount_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $system_status_incident_ticketcount ) . '">';
+		echo '			<input type="number" id="incident_ticketcount" name="incident_ticket_count" class="incident-field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $incident_ticket_count ) . '">';
 		echo '			<p class="description">' . __( 'Total # of tickets that reported the incident.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -246,11 +285,20 @@ class system_status_incident_meta {
 
 	}
 
+
+	/**
+	 * save_metabox function.
+	 *
+	 * @access public
+	 * @param mixed $post_id
+	 * @param mixed $post
+	 * @return void
+	 */
 	public function save_metabox( $post_id, $post ) {
 
 		// Add nonce for security and authentication.
-		$nonce_name   = isset( $_POST['system_status_nonce'] ) ? $_POST['system_status_nonce'] : '';
-		$nonce_action = 'system_status_nonce_action';
+		$nonce_name   = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
+		$nonce_action = 'nonce_action';
 
 		// Check if a nonce is set.
 		if ( ! isset( $nonce_name ) ) {
@@ -278,20 +326,22 @@ class system_status_incident_meta {
 		}
 
 		// Sanitize user input.
-		$system_status_new_incident_startdate = isset( $_POST['system_status_incident-startdate'] ) ? sanitize_text_field( $_POST['system_status_incident-startdate'] ) : '';
-		$system_status_new_incident_starttime = isset( $_POST['system_status_incident-starttime'] ) ? sanitize_text_field( $_POST['system_status_incident-starttime'] ) : '';
-		$system_status_new_incident_enddate = isset( $_POST['system_status_incident-enddate'] ) ? sanitize_text_field( $_POST['system_status_incident-enddate'] ) : '';
-		$system_status_new_incident_endtime = isset( $_POST['system_status_incident-endtime'] ) ? sanitize_text_field( $_POST['system_status_incident-endtime'] ) : '';
-		$system_status_new_incident_ticketcount = isset( $_POST['system_status_incident-ticketcount'] ) ? floatval( $_POST['system_status_incident-ticketcount'] ) : '';
+		$new_incident_start_date = isset( $_POST['incident_start_date'] ) ? sanitize_text_field( $_POST['incident_start_date'] ) : '';
+		$new_incident_start_time = isset( $_POST['incident_start_time'] ) ? sanitize_text_field( $_POST['incident_start_time'] ) : '';
+		$new_incident_end_date = isset( $_POST['incident_end_date'] ) ? sanitize_text_field( $_POST['incident_end_date'] ) : '';
+		$new_incident_end_time = isset( $_POST['incident_end_time'] ) ? sanitize_text_field( $_POST['incident_end_time'] ) : '';
+		$new_incident_ticket_count = isset( $_POST['incident_ticket_count'] ) ? floatval( $_POST['incident_ticket_count'] ) : '';
+		$new_incident_total_length = isset( $_POST['incident_total_length'] ) ? floatval( $_POST['incident_total_length'] ) : '';
 
 		// Update the meta field in the database.
-		update_post_meta( $post_id, 'system_status_incident-startdate', $system_status_new_incident_startdate );
-		update_post_meta( $post_id, 'system_status_incident-starttime', $system_status_new_incident_starttime );
-		update_post_meta( $post_id, 'system_status_incident-enddate', $system_status_new_incident_enddate );
-		update_post_meta( $post_id, 'system_status_incident-endtime', $system_status_new_incident_endtime );
-		update_post_meta( $post_id, 'system_status_incident-ticketcount', $system_status_new_incident_ticketcount );
+		update_post_meta( $post_id, 'incident_start_date', $new_incident_start_date );
+		update_post_meta( $post_id, 'incident_start_time', $new_incident_start_time );
+		update_post_meta( $post_id, 'incident_end_date', $new_incident_end_date );
+		update_post_meta( $post_id, 'incident_end_time', $new_incident_end_time );
+		update_post_meta( $post_id, 'incident_ticket_count', $new_incident_ticket_count );
+		update_post_meta( $post_id, 'incident_total_length', $new_incident_total_length );
 
 	}
 }
 
-new system_status_incident_meta;
+new incident_meta;

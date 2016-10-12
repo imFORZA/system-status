@@ -70,8 +70,18 @@ if ( ! function_exists( 'system_status_maintenance' ) ) {
 
 
 
+/**
+ * system_status_maint_meta class.
+ */
 class system_status_maint_meta {
 
+
+	/**
+	 * __construct function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function __construct() {
 
 		if ( is_admin() ) {
@@ -81,6 +91,13 @@ class system_status_maint_meta {
 
 	}
 
+
+	/**
+	 * init_metabox function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function init_metabox() {
 
 		add_action( 'add_meta_boxes',        array( $this, 'add_metabox' ) );
@@ -88,6 +105,13 @@ class system_status_maint_meta {
 
 	}
 
+
+	/**
+	 * add_metabox function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function add_metabox() {
 
 		add_meta_box(
@@ -101,6 +125,14 @@ class system_status_maint_meta {
 
 	}
 
+
+	/**
+	 * render_maint_metabox function.
+	 *
+	 * @access public
+	 * @param mixed $post
+	 * @return void
+	 */
 	public function render_maint_metabox( $post ) {
 
 		// Add nonce for security and authentication.
@@ -178,6 +210,15 @@ class system_status_maint_meta {
 
 	}
 
+
+	/**
+	 * save_metabox function.
+	 *
+	 * @access public
+	 * @param mixed $post_id
+	 * @param mixed $post
+	 * @return void
+	 */
 	public function save_metabox( $post_id, $post ) {
 
 		// Add nonce for security and authentication.
