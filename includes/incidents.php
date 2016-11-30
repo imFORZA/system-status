@@ -217,6 +217,7 @@ class incident_meta {
 		$incident_end_time = get_post_meta( $post->ID, 'incident_end_time', true );
 		$incident_ticket_count = get_post_meta( $post->ID, 'incident_ticket_count', true );
 		$incident_total_length = get_post_meta( $post->ID, 'incident_total_length', true );
+		$incident_attached_tickets = get_post_meta( $post->ID, 'incident_attached_tickets', true );
 
 		// Set default values.
 		if ( empty( $incident_start_date ) ) { $incident_start_date = '';
@@ -231,6 +232,7 @@ class incident_meta {
 		}
 		if ( empty( $incident_total_length ) ) { $incident_total_length = '';
 		}
+		if( empty( $incident_attached_tickets ) ) $incident_attached_tickets = '';
 
 		// Form fields.
 		echo '<table class="form-table">';
@@ -270,16 +272,22 @@ class incident_meta {
 		echo '	<tr>';
 		echo '		<th><label for="incident-ticketcount" class="incident-ticketcount_label">' . __( '# of Tickets Reporting', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="number" id="incident_ticketcount" name="incident_ticket_count" class="incident-field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $incident_ticket_count ) . '">';
+		echo '			<input type="number" id="incident_ticketcount" name="incident_ticket_count" class="incident-field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $incident_ticket_count ) . '" min="0">';
 		echo '			<p class="description">' . __( 'Total # of tickets that reported the incident.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
 
-		echo '<tr>';
+		/*
+			TODO: Display list or link to attached notices.
+		*/
+
+		echo '	<tr>';
+		echo '		<th><label for="incident_attached_tickets" class="incident_attached_tickets_label">' . __( 'Attached Tickets', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo 'Input for Array of Ticket IDs., Link to attached Notices.';
+		echo '			<textarea id="incident_attached_tickets" name="incident_attached_tickets" class="incident_attached_tickets_field" placeholder="' . esc_attr__( '', 'system-status' ) . '">' . $incident_attached_tickets . '</textarea>';
+		echo '			<p class="description">' . __( 'Array of Attached Tickets', 'system-status' ) . '</p>';
 		echo '		</td>';
-		echo '</tr>';
+		echo '	</tr>';
 
 		echo '</table>';
 
@@ -332,6 +340,7 @@ class incident_meta {
 		$new_incident_end_time = isset( $_POST['incident_end_time'] ) ? sanitize_text_field( $_POST['incident_end_time'] ) : '';
 		$new_incident_ticket_count = isset( $_POST['incident_ticket_count'] ) ? floatval( $_POST['incident_ticket_count'] ) : '';
 		$new_incident_total_length = isset( $_POST['incident_total_length'] ) ? floatval( $_POST['incident_total_length'] ) : '';
+		$new_incident_attached_tickets = isset( $_POST[ 'incident_attached_tickets' ] ) ? sanitize_text_field( $_POST[ 'incident_attached_tickets' ] ) : '';
 
 		// Update the meta field in the database.
 		update_post_meta( $post_id, 'incident_start_date', $new_incident_start_date );
@@ -340,6 +349,7 @@ class incident_meta {
 		update_post_meta( $post_id, 'incident_end_time', $new_incident_end_time );
 		update_post_meta( $post_id, 'incident_ticket_count', $new_incident_ticket_count );
 		update_post_meta( $post_id, 'incident_total_length', $new_incident_total_length );
+		update_post_meta( $post_id, 'incident_attached_tickets', $new_incident_attached_tickets );
 
 	}
 }
