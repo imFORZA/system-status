@@ -54,7 +54,7 @@ if ( have_posts() ) {
 				<?php the_title(); ?>
 				<?php the_content(); ?>
 
-				<small>Posted about 4 hours ago. Jun 02, 2017 - 11:32 UTC</small>
+				<small><?php echo human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago - '; ?><?php echo the_time('D, M, Y'); ?></small>
 				</div>
 
 				<?php endwhile; endif; ?>
