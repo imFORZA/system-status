@@ -38,9 +38,9 @@ if ( ! class_exists( 'SystemStatus' ) ) {
 		 */
 		public function __construct() {
 			/* Define Constants */
-			define( 'TEMPLATE_BASE_NAME', plugin_basename( __FILE__ ) );
-			define( 'TEMPLATE_BASE_DIR', plugin_dir_path( __FILE__ ) );
-			define( 'TEMPLATE_PLUGIN_FILE', TEMPLATE_BASE_DIR . 'system-status.php' );
+			define( 'SYSTEMSTATUS_BASE_NAME', plugin_basename( __FILE__ ) );
+			define( 'SYSTEMSTATUS_BASE_DIR', plugin_dir_path( __FILE__ ) );
+			define( 'SYSTEMSTATUS_PLUGIN_FILE', SYSTEMSTATUS_BASE_DIR . 'system-status.php' );
 
 			/* Include dependencies */
 			include_once( 'includes.php' );
@@ -53,11 +53,11 @@ if ( ! class_exists( 'SystemStatus' ) ) {
 		 */
 		private function init() {
 			/* Language Support */
-			load_plugin_textdomain( 'system-status', false, dirname( TEMPLATE_BASE_NAME ) . '/languages' );
+			load_plugin_textdomain( 'system-status', false, dirname( SYSTEMSTATUS_BASE_NAME ) . '/languages' );
 
 			/* IDX Broker Plugin Activation/De-Activation. */
-			register_activation_hook( TEMPLATE_PLUGIN_FILE, array( $this, 'activate' ) );
-			register_deactivation_hook( TEMPLATE_PLUGIN_FILE, array( $this, 'deactivate' ) );
+			register_activation_hook( SYSTEMSTATUS_PLUGIN_FILE, array( $this, 'activate' ) );
+			register_deactivation_hook( SYSTEMSTATUS_PLUGIN_FILE, array( $this, 'deactivate' ) );
 
 			/* Set menu page */
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
@@ -66,7 +66,9 @@ if ( ! class_exists( 'SystemStatus' ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 
 			/* Add link to settings in plugins admin page */
-			add_filter( 'plugin_action_links_' . TEMPLATE_BASE_NAME , array( $this, 'plugin_links' ) );
+			add_filter( 'plugin_action_links_' . SYSTEMSTATUS_BASE_NAME , array( $this, 'plugin_links' ) );
+
+			add_filter( 'template_include', array( $this, 'default_templates' ) );
 		}
 
 		/**
@@ -79,7 +81,7 @@ if ( ! class_exists( 'SystemStatus' ) ) {
 		 * Enqueue CSS.
 		 */
 		public function admin_scripts() {
-			wp_register_style( 'system-status-css', plugins_url( 'assets/css/system-status-min.css', TEMPLATE_PLUGIN_FILE ) );
+			wp_register_style( 'system-status-css', plugins_url( 'assets/css/system-status-min.css', SYSTEMSTATUS_PLUGIN_FILE ) );
 			wp_enqueue_style( 'system-status-css' );
 		}
 
@@ -108,6 +110,62 @@ if ( ! class_exists( 'SystemStatus' ) ) {
 			array_unshift( $links, $tools_link );
 			return $links;
 		}
+
+
+		public function default_templates( $template ) {
+
+		global $wp_query;
+
+
+
+
+	if ( is_post_type_archive( 'incident' ) ) {
+		if ( file_exists( get_stylesheet_directory() . '/archive-incident.php' ) ) {
+			$template = get_stylesheet_directory() . '/archive-incident.php';
+			return $template;
+		} else {
+			return SYSTEMSTATUS_BASE_DIR . '/templates/archive-incident.php';
+		}
+	}
+
+
+	if ( is_single() && get_post_type() === 'incident' ) {
+
+		if ( file_exists( get_stylesheet_directory() . '/single-incident.php' ) ) {
+			$template = get_stylesheet_directory() . '/single-incident.php';
+			return $template;
+		} else {
+			return SYSTEMSTATUS_BASE_DIR . '/templates/single-incident.php';
+		}
+
+	}
+
+
+	if ( is_post_type_archive( 'maintenance' ) ) {
+		if ( file_exists( get_stylesheet_directory() . '/archive-maintenance.php' ) ) {
+			$template = get_stylesheet_directory() . '/archive-maintenance.php';
+			return $template;
+		} else {
+			return SYSTEMSTATUS_BASE_DIR . '/templates/archive-maintenance.php';
+		}
+	}
+
+
+	if ( is_single() && get_post_type() === 'maintenance' ) {
+
+		if ( file_exists( get_stylesheet_directory() . '/single-maintenance.php' ) ) {
+			$template = get_stylesheet_directory() . '/single-maintenance.php';
+			return $template;
+		} else {
+			return SYSTEMSTATUS_BASE_DIR . '/templates/single-maintenance.php';
+		}
+
+	}
+
+
+		return $template;
+	}
+
 	}
 }
 

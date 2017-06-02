@@ -113,11 +113,6 @@ if ( ! function_exists( 'system_status_notice_type' ) ) {
 }
 
 
-
-
-
-
-
 /**
  * system_status_notice_meta class.
  */
@@ -214,14 +209,18 @@ class system_status_notice_meta {
 			echo '<option value="maintenance"' . selected( $notice_type['slug'], 'maintenance') . '>Maintenance</option>';
 			echo '</select>';
 
+?>
 
+
+
+<?php
 
 
 		echo '	 <p class="description">' . __( 'Is this notice related to an incident or maintenance?', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
 
-		echo '	<tr>';
+		echo '	<tr class="incident-row">';
 		echo '	<th><label for="notice_incident_id" class="notice_incident_id_label">' . __( 'Incident', 'system-status' ) . '</label></th>';
 		echo '	<td>';
 
@@ -234,7 +233,7 @@ class system_status_notice_meta {
 		) );
 
 		if ( ! empty( $incidents ) && ! is_wp_error( $incidents ) ) {
-			echo '<select id="notice-type-dropdown" class="widefat" name="notice_incident_id" >';
+			echo '<select id="notice-incidents-dropdown" class="widefat incidents" name="notice_incident_id" >';
 			echo '<option value="">Choose...</option>';
 			foreach ( $incidents as $incident ) {
 				if ( ! empty( $incident->ID ) ) {
@@ -248,7 +247,7 @@ class system_status_notice_meta {
 		echo '		</td>';
 		echo '	</tr>';
 
-		echo '	<tr>';
+		echo '	<tr class="maint-row">';
 		echo '		<th><label for="notice_maintenance_id" class="notice_maintenance_id_label">' . __( 'Maintenance', 'system-status' ) . '</label></th>';
 		echo '		<td>';
 
@@ -261,7 +260,7 @@ class system_status_notice_meta {
 		) );
 
 		if ( ! empty( $maintenances ) && ! is_wp_error( $maintenances ) ) {
-			echo '<select id="notice-type-dropdown" class="widefat"  name="notice_maintenance_id" >';
+			echo '<select id="notice-maint-dropdown" class="widefat maintenance"  name="notice_maintenance_id" >';
 			echo '<option value="">Choose...</option>';
 			foreach ( $maintenances as $maintenance ) {
 				if ( ! empty( $maintenance->ID ) ) {
@@ -281,11 +280,11 @@ class system_status_notice_meta {
 
 
 	/**
-	 * save_metabox function.
+	 * Save Metabox.
 	 *
 	 * @access public
-	 * @param mixed $post_id
-	 * @param mixed $post
+	 * @param mixed $post_id Post ID.
+	 * @param mixed $post Post.
 	 * @return void
 	 */
 	public function save_metabox( $post_id, $post ) {
