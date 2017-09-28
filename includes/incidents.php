@@ -185,6 +185,12 @@ class incident_meta {
 	}
 
 
+	/**
+	 * init_metabox function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function init_metabox() {
 
 		add_action( 'add_meta_boxes',        array( $this, 'add_metabox' ) );
@@ -192,6 +198,12 @@ class incident_meta {
 
 	}
 
+	/**
+	 * add_metabox function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function add_metabox() {
 
 		add_meta_box(
@@ -205,6 +217,13 @@ class incident_meta {
 
 	}
 
+	/**
+	 * render_metabox function.
+	 *
+	 * @access public
+	 * @param mixed $post
+	 * @return void
+	 */
 	public function render_metabox( $post ) {
 
 		// Add nonce for security and authentication.
@@ -240,7 +259,7 @@ class incident_meta {
 		echo '	<tr>';
 		echo '		<th><label for="incident_start_date" class="incident-startdate_label">' . __( 'Start Date', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="date" id="incident-start-date" name="incident_start_time" class="incident-field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $incident_start_date ) . '">';
+		echo '			<input type="date" id="incident-start-date" name="incident_start_date" class="incident-field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $incident_start_date ) . '">';
 		echo '			<p class="description">' . __( 'The Date the Incident started to occur.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';

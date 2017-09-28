@@ -143,10 +143,10 @@ class maint_meta {
 		$maint_scheduled_start_time = get_post_meta( $post->ID, 'maint_scheduled_start_time', true );
 		$maint_scheduled_end_time = get_post_meta( $post->ID, 'maint_scheduled_end_time', true );
 		$maint_scheduled_end_date = get_post_meta( $post->ID, 'maint_scheduled_end_date', true );
-		$maint_actual_start_date = get_post_meta( $post->ID, 'maint_true_start_date', true );
-		$maint_actual_start_time = get_post_meta( $post->ID, 'maint_true_start_time', true );
-		$maint_actual_end_date = get_post_meta( $post->ID, 'maint_true_end_date', true );
-		$maint_actual_end_time = get_post_meta( $post->ID, 'maint_true_end_time', true );
+		$maint_actual_start_date = get_post_meta( $post->ID, 'maint_actual_start_date', true );
+		$maint_actual_start_time = get_post_meta( $post->ID, 'maint_actual_start_time', true );
+		$maint_actual_end_date = get_post_meta( $post->ID, 'maint_actual_end_date', true );
+		$maint_actual_end_time = get_post_meta( $post->ID, 'maint_actual_end_time', true );
 		$maint_ticket_count = get_post_meta( $post->ID, 'maint_ticket_count', true );
 		$maint_total_length = get_post_meta( $post->ID, 'maint_total_length', true );
 		$maint_attached_tickets = get_post_meta( $post->ID, 'maint_attached_tickets', true );
@@ -177,7 +177,7 @@ class maint_meta {
 		echo '	<tr>';
 		echo '		<th><label for="maint-scheduled-start-date" class="maint-scheduled-start-date_label">' . __( 'Scheduled Start Date', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="date" id="maint_scheduled_start_date" name="maint-scheduled-start-date" class="maint_scheduled_start_date_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_scheduled_start_date ) . '">';
+		echo '			<input type="date" id="maint_scheduled_start_date" name="maint_scheduled_start_date" class="maint_scheduled_start_date_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_scheduled_start_date ) . '">';
 		echo '			<p class="description">' . __( 'The Scheduled Start Date.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -185,7 +185,7 @@ class maint_meta {
 		echo '	<tr>';
 		echo '		<th><label for="maint-scheduled-start-time" class="maint-scheduled-start-time_label">' . __( 'Scheduled Start Time', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="time" id="maint_scheduled_start_time" name="maint-scheduled-start-time" class="maint_scheduled_start_time_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_scheduled_start_time ) . '">';
+		echo '			<input type="time" id="maint_scheduled_start_time" name="maint_scheduled_start_time" class="maint_scheduled_start_time_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_scheduled_start_time ) . '">';
 		echo '			<p class="description">' . __( 'The Scheduled Start Time.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -193,7 +193,7 @@ class maint_meta {
 		echo '	<tr>';
 		echo '		<th><label for="maint-scheduled-end-date" class="maint-scheduled-end-date_label">' . __( 'Scheduled End Date', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="date" id="maint_scheduled_end_date" name="maint-scheduled-end-date" class="maint_scheduled_end_date_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_scheduled_end_date ) . '">';
+		echo '			<input type="date" id="maint_scheduled_end_date" name="maint_scheduled_end_date" class="maint_scheduled_end_date_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_scheduled_end_date ) . '">';
 		echo '			<p class="description">' . __( 'The Scheduled End Date.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -201,7 +201,7 @@ class maint_meta {
 		echo '	<tr>';
 		echo '		<th><label for="maint-scheduled-end-time" class="maint-scheduled-end-time_label">' . __( 'Scheduled End Time', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="time" id="maint_scheduled_end_time" name="maint-scheduled-end-time" class="maint_scheduled_end_time_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_scheduled_end_time ) . '">';
+		echo '			<input type="time" id="maint_scheduled_end_time" name="maint_scheduled_end_time" class="maint_scheduled_end_time_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_scheduled_end_time ) . '">';
 		echo '			<p class="description">' . __( 'The Scheduled end Time.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -210,7 +210,7 @@ class maint_meta {
 		echo '	<tr>';
 		echo '		<th><label for="maint-actual-start-date" class="maint-actual-start-date_label">' . __( 'Actual Start Date', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="date" id="maint_actual_start_date" name="maint-actual-start-date" class="maint_actual_start_date_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_actual_start_date ) . '">';
+		echo '			<input type="date" id="maint_actual_start_date" name="maint_actual_start_date" class="maint_actual_start_date_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_actual_start_date ) . '">';
 		echo '			<p class="description">' . __( 'The Actual Start Date.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -218,7 +218,7 @@ class maint_meta {
 		echo '	<tr>';
 		echo '		<th><label for="maint-actual-start-time" class="maint-actual-start-time_label">' . __( 'Actual Start Time', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="time" id="maint_actual_start_time" name="maint-actual-start-time" class="maint_actual_start_time_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_actual_start_time ) . '">';
+		echo '			<input type="time" id="maint_actual_start_time" name="maint_actual_start_time" class="maint_actual_start_time_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_actual_start_time ) . '">';
 		echo '			<p class="description">' . __( 'The Actual Start Time', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -227,7 +227,7 @@ class maint_meta {
 		echo '	<tr>';
 		echo '		<th><label for="maint-actual-end-date" class="maint-actual-end-date_label">' . __( 'Actual End Date', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="date" id="maint_actual_end_date" name="maint-actual-end-date" class="maint_actual_end_date_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_actual_end_date ) . '">';
+		echo '			<input type="date" id="maint_actual_end_date" name="maint_actual_end_date" class="maint_actual_end_date_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_actual_end_date ) . '">';
 		echo '			<p class="description">' . __( 'The Actual end Date.', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -236,7 +236,7 @@ class maint_meta {
 		echo '	<tr>';
 		echo '		<th><label for="maint-actual-end-time" class="maint-actual-end-time_label">' . __( 'Actual End Time', 'system-status' ) . '</label></th>';
 		echo '		<td>';
-		echo '			<input type="time" id="maint_actual_end_time" name="maint-actual-end-time" class="maint_actual_end_time_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_actual_end_time ) . '">';
+		echo '			<input type="time" id="maint_actual_end_time" name="maint_actual_end_time" class="maint_actual_end_time_field" placeholder="' . esc_attr__( '', 'system-status' ) . '" value="' . esc_attr__( $maint_actual_end_time ) . '">';
 		echo '			<p class="description">' . __( 'The Actual end Time', 'system-status' ) . '</p>';
 		echo '		</td>';
 		echo '	</tr>';
@@ -312,10 +312,10 @@ class maint_meta {
 		$new_maint_scheduled_start_time = isset( $_POST['maint_scheduled_start_time'] ) ? sanitize_text_field( $_POST['maint_scheduled_start_time'] ) : '';
 		$new_maint_scheduled_end_date = isset( $_POST['maint_scheduled_end_date'] ) ? sanitize_text_field( $_POST['maint_scheduled_end_date'] ) : '';
 		$new_maint_scheduled_end_time = isset( $_POST['maint_scheduled_end_time'] ) ? sanitize_text_field( $_POST['maint_scheduled_end_time'] ) : '';
-		$new_maint_actual_start_date = isset( $_POST['maint_true_start_date'] ) ? sanitize_text_field( $_POST['maint_true_start_date'] ) : '';
-		$new_maint_actual_start_time = isset( $_POST['maint_true_start_time'] ) ? sanitize_text_field( $_POST['maint_true_start_time'] ) : '';
-		$new_maint_actual_end_date = isset( $_POST['maint_true_end_date'] ) ? sanitize_text_field( $_POST['maint_true_end_date'] ) : '';
-		$new_maint_actual_end_time = isset( $_POST['maint_true_end_time'] ) ? sanitize_text_field( $_POST['maint_true_end_time'] ) : '';
+		$new_maint_actual_start_date = isset( $_POST['maint_actual_start_date'] ) ? sanitize_text_field( $_POST['maint_actual_start_date'] ) : '';
+		$new_maint_actual_start_time = isset( $_POST['maint_actual_start_time'] ) ? sanitize_text_field( $_POST['maint_actual_start_time'] ) : '';
+		$new_maint_actual_end_date = isset( $_POST['maint_actual_end_date'] ) ? sanitize_text_field( $_POST['maint_actual_end_date'] ) : '';
+		$new_maint_actual_end_time = isset( $_POST['maint_actual_end_time'] ) ? sanitize_text_field( $_POST['maint_actual_end_time'] ) : '';
 		$new_maint_ticket_count = isset( $_POST['maint_ticket_count'] ) ? floatval( $_POST['maint_ticket_count'] ) : '';
 		$new_maint_total_length = isset( $_POST['maint_total_length'] ) ? floatval( $_POST['maint_total_length'] ) : '';
 		$new_maint_attached_tickets = isset( $_POST[ 'maint_attached_tickets' ] ) ? sanitize_text_field( $_POST[ 'maint_attached_tickets' ] ) : '';
